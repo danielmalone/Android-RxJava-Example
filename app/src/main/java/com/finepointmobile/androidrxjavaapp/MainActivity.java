@@ -9,6 +9,7 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,30 +22,30 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Observable<String> observable = Observable.just("Daniel Malone!");
-
-        Observer observer = new Observer() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(@NonNull Object o) {
-                Log.d(TAG, "onNext: here" + o.toString());
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-
-        observable.subscribe(observer);
+        Observable.just("Daniel", "Malone")
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(Observer);
     }
+
+    Observer<String> Observer = new Observer<String>() {
+        @Override
+        public void onSubscribe(@NonNull Disposable d) {
+
+        }
+
+        @Override
+        public void onNext(@NonNull String s) {
+            Log.d(TAG, "onNext: here: " + s);
+        }
+
+        @Override
+        public void onError(@NonNull Throwable e) {
+
+        }
+
+        @Override
+        public void onComplete() {
+
+        }
+    };
 }
