@@ -7,6 +7,7 @@ import android.util.Log;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -22,8 +23,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Observable.just("Daniel", "Malone")
-                .subscribeOn(Schedulers.newThread())
+        Observable.just("Daniel Malone")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(Observer);
     }
 
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onNext(@NonNull String s) {
-            Log.d(TAG, "onNext: here: " + s);
+            Log.d(TAG, "onNext: " + s);
         }
 
         @Override
